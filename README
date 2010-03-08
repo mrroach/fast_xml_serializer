@@ -1,0 +1,37 @@
+fast_xml_serializer uses libxml to serialize ActiveRecord objects to xml.
+
+In addition to being faster than Builder for rendering, it also caches column
+types sensibly and is generally more efficient than the built-in
+ActiveRecord::Base#to_xml
+
+
+It defines two new methods:
+
+  ActiveRecord::Base#to_xml_doc
+  and
+  ActiveRecord::Base.instances_to_xml
+
+
+To use these methods in your controller, you would do something like:
+
+
+class UsersController
+
+  # GET /users
+  def index
+    respond_to do |format|
+      format.xml do
+        render :xml => User.instances_to_xml(@users, to_xml_parameters)
+      end
+    end
+  end
+
+  # GET /users/:id
+  def show
+    respond_to do |format|
+      format.xml do
+        render :xml => @user.to_xml_doc.to_s
+      end
+    end
+  end
+end
